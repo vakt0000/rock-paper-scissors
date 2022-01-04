@@ -58,7 +58,7 @@ function game() {
   let user_score = 0;
   let computer_score = 0;
   while(number_of_rounds_left>0) {
-    let result = playRound(prompt("Hello"), computerPlay());
+    let result = playRound(prompt("Please type 'Rock', 'Scissors' or 'Paper'."), computerPlay());
     number_of_rounds_left--;
     (result === "user") ? user_score++ : (result==="computer") ? computer_score++ : number_of_rounds_left++;
   }
