@@ -4,10 +4,25 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
 <body>
-  <p>CHECK THE CONSOLE!</p>
-  <script type="text/javascript" src="jsfile.js"></script>
+  <div class="container">
+  <div class="game-title">
+      <h1>ROCK - PAPER - SCISSORS</h1>
+    </div>
+    <div class="buttons">
+      <button class="Rock">ROCK</button>
+      <button class="Paper">PAPER</button>
+      <button class="Scissors">SCISSORS</button>
+    </div>
+    <div class="result">
+      <p>The current result is:</p>
+      <p>User--&#62; <span id="score-user">0</span>:<span id="score-computer">0</span> &#60;--Computer</p>
+      <p>Number of matches: <span id="n-matches">0</span></p>
+    </div>
+  </div>
+  <script type="text/javascript" src="jsfile.js" defer></script>
 </body>
 </html>

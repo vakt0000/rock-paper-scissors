@@ -53,16 +53,35 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function game() {
-  let number_of_rounds_left = 5;
-  let user_score = 0;
-  let computer_score = 0;
-  while(number_of_rounds_left>0) {
-    let result = playRound(prompt("Please type 'Rock', 'Scissors' or 'Paper'."), computerPlay());
-    number_of_rounds_left--;
-    (result === "user") ? user_score++ : (result==="computer") ? computer_score++ : number_of_rounds_left++;
-  }
-  console.log(`Final user score: ${user_score} ---- FInal computer score: ${computer_score}`)
+function updateData() {
+  scoreUserSpan.textContent = `${gameData[0]}`;
+  scoreComputerSpan.textContent = `${gameData[1]}`;
+  nMatchesSpan.textContent = `${gameData[2]}`;
 }
 
-game();
+function game(e) {
+  if(gameData[0]>=5 || gameData[1]>=5) {
+    buttons.forEach((button) => {
+      button.removeEventListener('click', game);
+    })
+  }
+  else {
+    console.log(`user:${gameData[0]}--${gameData[1]}:computer`)
+    let result = playRound(e.srcElement.getAttribute("class"), computerPlay());
+    (result === "user") ? gameData[0]++ : (result==="computer") ? gameData[1]++ : null;
+    gameData[2]++;
+    updateData();
+  }
+
+}
+
+let gameData = [0, 0, 0];
+
+buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+  button.addEventListener('click', game);
+})
+
+scoreUserSpan = document.querySelector("#score-user");
+scoreComputerSpan = document.querySelector("#score-computer");
+nMatchesSpan = document.querySelector("#n-matches");
