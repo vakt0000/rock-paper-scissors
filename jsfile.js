@@ -12,41 +12,32 @@ function computerPlay() {
 function playRound(playerSelection, computerSelection) {
   // The player selection will always be capitalizaed.
   playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-  console.log(computerSelection);
-  console.log(playerSelection);
   if(playerSelection===computerSelection) {
-    console.log(`It's a tie! You and the computer selected ${computerSelection}.`);
     return "tie";
   }
   else {
 
     if(playerSelection==="Scissors"){
       if(computerSelection==="Paper") {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
         return "user";
       }
       else {
-        console.log(`Computer wins... ${computerSelection} beats ${playerSelection}`);
         return "computer";
       }
     } 
     else if(playerSelection.toLowerCase==="Paper") {
       if(computerSelection=="Rock") {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
         return "user";
       }
       else {
-        console.log(`Computer wins... ${computerSelection} beats ${playerSelection}`);
         return "computer";
       }
     }
     else {
       if(playerSelection==="Rock" && computerSelection==="Scissors") {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
         return "user";
       }
       else {
-        console.log(`Computer wins... ${computerSelection} beats ${playerSelection}`);
         return "computer";
       }
     }
@@ -56,32 +47,53 @@ function playRound(playerSelection, computerSelection) {
 function updateData() {
   scoreUserSpan.textContent = `${gameData[0]}`;
   scoreComputerSpan.textContent = `${gameData[1]}`;
-  nMatchesSpan.textContent = `${gameData[2]}`;
+  nRoundsSpan.textContent = `${gameData[2]}`;
+}
+
+function restart_game(e) {
+  console.log(e);
+  this.removeEventListener('click', restart_game);
+  container.removeChild(this);
+  container.removeChild(div);
+  createEventListenerButtons();
+  gameData = [0, 0, 0];
+  updateData();
 }
 
 function game(e) {
+  console.log(`user:${gameData[0]}--${gameData[1]}:computer`)
+  let result = playRound(e.srcElement.getAttribute("class"), computerPlay());
+  (result === "user") ? gameData[0]++ : (result==="computer") ? gameData[1]++ : null;
+  gameData[2]++;
+  updateData();
   if(gameData[0]>=5 || gameData[1]>=5) {
     buttons.forEach((button) => {
       button.removeEventListener('click', game);
     })
+    buttonReset.addEventListener('click', restart_game);
+    (gameData[0] > gameData[1]) ? div.textContent = "User wins!" : div.textContent = "Computer wins...";
+    container.appendChild(buttonReset);
+    container.appendChild(div);
   }
-  else {
-    console.log(`user:${gameData[0]}--${gameData[1]}:computer`)
-    let result = playRound(e.srcElement.getAttribute("class"), computerPlay());
-    (result === "user") ? gameData[0]++ : (result==="computer") ? gameData[1]++ : null;
-    gameData[2]++;
-    updateData();
-  }
+}
 
+function createEventListenerButtons() {
+  buttons.forEach((button) => {
+    button.addEventListener('click', game);
+  })
 }
 
 let gameData = [0, 0, 0];
 
-buttons = document.querySelectorAll("button");
-buttons.forEach((button) => {
-  button.addEventListener('click', game);
-})
+const buttons = document.querySelectorAll("button");
+createEventListenerButtons();
+const container = document.querySelector(".container");
+const div = document.createElement("div");
+const buttonReset = document.createElement("button");
+
+buttonReset.textContent = "RESET GAME";
+div.style.cssText = "margin-top: 10px";
 
 scoreUserSpan = document.querySelector("#score-user");
 scoreComputerSpan = document.querySelector("#score-computer");
-nMatchesSpan = document.querySelector("#n-matches");
+nRoundsSpan = document.querySelector("#n-rounds");
